@@ -1,8 +1,13 @@
 import express from 'express';
+import connectDB from './config/db.js';
 import products from './data/products.js'
 import { configDotenv } from 'dotenv';
-const app = express();
+
 configDotenv();
+
+connectDB();
+
+const app = express();
 
 app.get('/', (req, res)=>{
     res.send("hello from server");
