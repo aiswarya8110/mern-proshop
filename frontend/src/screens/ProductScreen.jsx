@@ -8,8 +8,7 @@ const ProductScreen = ()=>{
     const { id: productId } = useParams();
     
     const fetchProduct = async()=>{
-        const { data } = await axios.get(`/api/product/${productId}`);
-        console.log("SINGLE PRODUCT", data);
+        const { data } = await axios.get(`/api/products/${productId}`);
         setProduct(data);
     }
 
