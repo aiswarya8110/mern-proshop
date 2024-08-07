@@ -1,22 +1,19 @@
-import { useState, useEffect } from 'react';
 import axios from 'axios'; 
 import { Link, useParams } from 'react-router-dom';
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
 import Rating from '../components/Rating';
+import { useGetProductDetailsQuery } from '../redux/features/ProductsApiSlice';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
 const ProductScreen = ()=>{
-    const [ product, setProduct ] = useState(null);
     const { id: productId } = useParams();
-    
-    const fetchProduct = async()=>{
-        const { data } = await axios.get(`/api/products/${productId}`);
-        setProduct(data);
-    }
+    const { data: product, error, isLoading} = useGetProductDetailsQuery(productId);
 
-    useEffect(()=>{
-        fetchProduct();
-    },[])
-
-    return (
+    return isLoading ? <Loader /> : error ? (
+    <Message variant='danger'>
+        {error?.data?.message || error?.message}
+    </Message>
+    ): (
         <>
             <Link className='btn btn-light my-3'>Go Back</Link>
             <Row>
