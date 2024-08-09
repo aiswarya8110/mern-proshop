@@ -16,7 +16,9 @@ const cartSlice = createSlice({
             const existingItem = state.cartItems.find((x)=> x._id === item._id);
 
             if(existingItem){
-                
+                state.cartItems = state.cartItems.map((x)=>{
+                    return x._id === existingItem._id ? item : x 
+                })
             }
             else{
                 state.cartItems = [...state.cartItems, item];
@@ -39,10 +41,15 @@ const cartSlice = createSlice({
             ).toFixed(2);
 
             localStorage.setItem("cart", JSON.stringify(state));
+        },
+        deleteCartItem: (state, action)=>{
+            const item = action.payload;
+            console.log(item);
+            state.cartItems = state.cartItems.filter((x)=> x._id !== item._id);
         }
     }
 });
 
-export const { addToCart } = cartSlice.actions;
+export const { addToCart, deleteCartItem } = cartSlice.actions;
 
 export default cartSlice.reducer;
