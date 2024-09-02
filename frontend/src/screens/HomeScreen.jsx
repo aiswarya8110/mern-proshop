@@ -5,10 +5,9 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 const HomeScreen = ()=>{
     const {data:products, isLoading, error } = useGetProductsQuery();
-
     return isLoading ? <Loader /> : error ? (
     <Message variant='danger'>
-        {error?.data.message || error?.error}
+        {error?.data?.message || error?.error}
     </Message>) : 
     (<>
         <h1>Latest Products</h1>

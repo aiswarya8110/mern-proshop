@@ -1,8 +1,9 @@
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css'
 import Footer from './components/Footer';
 import Header from './components/Header';
 import { Container } from 'react-bootstrap';
-import HomeScreen from './screens/HomeScreen';
 import { Outlet } from 'react-router-dom';
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         </Container>
       </main>
       <Footer />
+      <ToastContainer position='top-right' closeOnClick />
     </>
   )
 }

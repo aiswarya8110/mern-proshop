@@ -3,4 +3,5 @@ reviewSchema - User ref
 
 Custom Error Middleware
 
-AddTocart cartSlice --- To do
+To do - delete user and update user, getUserByID controller in userController.js - 8:11
+Routes -delete user and update user, getUserByID controller in userController.js - 11:58 (AUTH middleware and endpoint)

@@ -9,6 +9,12 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen.jsx';
 import ProductScreen from './screens/ProductScreen.jsx';
 import CartScreen from './screens/CartScreen.jsx';
+import LoginScreen from './screens/LoginScreen.jsx';
+import RegisterScreen from './screens/RegisterScreen.jsx';
+import ShippingScreen from './screens/ShippingScreen.jsx';
+import PrivateRoute from './components/PrivateRoute.jsx';
+import PaymentScreen from './screens/PaymentScreen.jsx';
+import PlaceOrderScreen from './screens/PlaceOrderScreen.jsx';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +32,26 @@ const router = createBrowserRouter([
       {
         path: 'cart',
         element: <CartScreen />
+      },
+      {
+        path: 'login',
+        element: <LoginScreen />
+      },
+      {
+        path: 'register',
+        element: <RegisterScreen />
+      },
+      {
+        path: 'shipping',
+        element: <PrivateRoute><ShippingScreen /></PrivateRoute>
+      },
+      {
+        path: 'payment',
+        element: <PaymentScreen />
+      },
+      {
+        path: 'order',
+        element: <PrivateRoute><PlaceOrderScreen /></PrivateRoute>
       }
     ]
   }
