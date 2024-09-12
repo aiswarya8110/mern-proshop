@@ -10,8 +10,8 @@ OrderRouter.get('/myorders', protect, getMyOrders);
 
 OrderRouter.get('/:id', protect, getOrderById);
 
-OrderRouter.get('/:id/pay', protect, updateOrderToPaid);
+OrderRouter.put('/:id/pay', protect, updateOrderToPaid);
 
-OrderRouter.get('/:id/deliver', protect, updateToDelivered);
+OrderRouter.get('/:id/deliver', protect, admin, updateToDelivered);
 
 export default OrderRouter;

@@ -15,7 +15,7 @@ const PaymentScreen = ()=>{
     const handleSubmit = (e)=>{
         e.preventDefault();
         dispatch(savePaymentMethod(paymentMethod));
-        navigate('/order');
+        navigate('/placeOrder');
     }
 
     useEffect(()=>{

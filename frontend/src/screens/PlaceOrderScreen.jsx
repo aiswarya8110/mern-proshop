@@ -1,17 +1,40 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from 'react-toastify';
 import { usePlaceOrderMutation } from "../redux/features/ordersApiSlice";
 import { Row, Col, Image, ListGroup, ListGroupItem, Card, Button } from "react-bootstrap";
 import CheckoutSteps from "../components/CheckoutSteps";
+import { clearCartItems } from "../redux/features/cartSlice";
 const PlaceOrderScreen = ()=>{
     const { shippingAddress, cartItems, paymentMethod, shippingPrice, taxPrice, totalPrice, itemsPrice } = useSelector((store)=> store.cart);
     const navigate = useNavigate();
 
+    const dispatch = useDispatch();
+
     const [ placeOrder, { isLoading, err }] = usePlaceOrderMutation();
 
-    const handlePlaceOrder = ()=>{
+    const handlePlaceOrder = async()=>{
+        try{
+            const res  = await placeOrder({
+                shippingAddress,
+                cartItems,
+                paymentMethod,
+                shippingPrice,
+                taxPrice,
+                totalPrice,
+            });
 
+            dispatch(clearCartItems());
+
+            console.log(res);
+
+            navigate(`/order/${res?.data?._id}`);
+
+        }catch(err){
+            console.log(err);
+            toast.error(err);
+        }
     }
 
     useEffect(()=>{
@@ -116,7 +139,7 @@ const PlaceOrderScreen = ()=>{
                                 </Row>
                             </ListGroup.Item>
                             <ListGroupItem>
-                                <Button type="button" onClick={handlePlaceOrder}>Place order</Button>
+                                <Button type="button" disabled={isLoading} onClick={handlePlaceOrder}>Place order</Button>
                             </ListGroupItem>
                         </ListGroup>
                     </Card>

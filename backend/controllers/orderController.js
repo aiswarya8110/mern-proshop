@@ -6,7 +6,7 @@ import Order from '../models/orders.js';
 // @access  Private
 const createOrder = asyncHandler(async(req, res)=>{
     const {
-        orderItems,
+        cartItems,
         shippingAddress,
         paymentMethod,
         itemsPrice,
@@ -16,7 +16,7 @@ const createOrder = asyncHandler(async(req, res)=>{
     } = req.body;
 
     const order = new Order({
-        orderItems: orderItems.map((item)=>({
+        orderItems: cartItems.map((item)=>({
         ...item, 
         product: item._id,
          _id: undefined
@@ -61,10 +61,22 @@ const getMyOrders = asyncHandler(async(req, res)=>{
 })
 
 // @desc    Update order to paid
-// @route   GET /api/order/:id/pay
+// @route   PUT /api/order/:id/pay
 // @access  Private
 const updateOrderToPaid = asyncHandler(async(req, res)=>{
-    res.json("update order to paid");
+    const order = await Order.findById(req.params.id);
+
+    if(order){
+        order.isPaid = true;
+        order.paidAt = Date.now();
+
+        const updatedOrder = await order.save();
+
+        res.status(201).json(updatedOrder);
+    }else{
+        res.status(404).send("Order not found.");
+        throw new Error("Order not found.");
+    }
 })
 
 // @desc    Update order as delivered

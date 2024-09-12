@@ -39,7 +39,7 @@ const OrderSchema = new Schema({
             type: String,
             required: true,
         },
-        postalCode: {
+        pinCode: {
             type: Number,
             required: true,
         },
