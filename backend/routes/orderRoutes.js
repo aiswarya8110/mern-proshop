@@ -12,6 +12,6 @@ OrderRouter.get('/:id', protect, getOrderById);
 
 OrderRouter.put('/:id/pay', protect, updateOrderToPaid);
 
-OrderRouter.get('/:id/deliver', protect, admin, updateToDelivered);
+OrderRouter.patch('/:id/deliver', protect, admin, updateToDelivered);
 
 export default OrderRouter;

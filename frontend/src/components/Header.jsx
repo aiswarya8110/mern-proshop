@@ -19,7 +19,6 @@ const Header = ()=>{
     const handleLogout = async()=>{
         try {
             const res = await logoutUser();
-            console.log(res);
             toast.success(res?.data?.message);
 
             dispatch(removeUserInfo());
@@ -57,11 +56,38 @@ const Header = ()=>{
                             {
                                 userInfo ? (
                                     <NavDropdown title={userInfo.name} id='username'>
-                                        <LinkContainer to='profile'>
+                                        <LinkContainer to='/profile'>
                                             <NavDropdown.Item>
                                                 Profile
                                             </NavDropdown.Item>
                                         </LinkContainer>
+                                        {
+                                            userInfo.isAdmin && (
+                                                <LinkContainer to="/admin/orderList">
+                                                    <NavDropdown.Item>
+                                                        Orders
+                                                    </NavDropdown.Item>
+                                                </LinkContainer>
+                                            )
+                                        }
+                                        {
+                                            userInfo.isAdmin && (
+                                                <LinkContainer to="/admin/productList">
+                                                    <NavDropdown.Item>
+                                                        Products
+                                                    </NavDropdown.Item>
+                                                </LinkContainer>
+                                            )
+                                        }
+                                        {
+                                            userInfo.isAdmin && (
+                                                <LinkContainer to="/admin/userList">
+                                                    <NavDropdown.Item>
+                                                        Users
+                                                    </NavDropdown.Item>
+                                                </LinkContainer>
+                                            )
+                                        }
                                         <NavDropdown.Item onClick={handleLogout}>
                                             Logout
                                         </NavDropdown.Item>

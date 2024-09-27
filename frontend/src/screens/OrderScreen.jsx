@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { toast } from 'react-toastify';
-import { useGetOrderByIdQuery, useUpdateToPaidMutation } from './../redux/features/ordersApiSlice';
+import { useGetOrderByIdQuery, useUpdateToPaidMutation, useUpdateToDeliveredMutation } from './../redux/features/ordersApiSlice';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { Row, Col, ListGroup, Image, Card, Button} from 'react-bootstrap';
@@ -11,8 +11,10 @@ const OrderScreen = ()=>{
     const { userInfo } = useSelector((store)=> store.auth);
     const { orderId } = useParams();
     const { data:order, isLoading, error, refetch } = useGetOrderByIdQuery(orderId);
-    console.log(order);
-    const [ updateToPaid, { isUpdateToPaidLoading, updateToPaidError }] = useUpdateToPaidMutation();
+    
+    const [ updateToPaid, { isLoading:isUpdateToPaidLoading, error:updateToPaidError }] = useUpdateToPaidMutation();
+
+    const [ updateToDelivered, { isLoading:isUpdateToDeliveredLoading } ] = useUpdateToDeliveredMutation();
 
     const [{ isPending, options }, payPalDispatch ] = usePayPalScriptReducer();
     console.log("isPending", isPending);
@@ -34,6 +36,17 @@ const OrderScreen = ()=>{
             })
         }
     },[order]);
+
+
+    const updateOrderDelivery = async()=>{
+        try {
+            await updateToDelivered(orderId);
+            refetch();
+            toast.success("Marked as Delivered");
+        } catch (error) {
+            toast.error(error?.data?.message || error.message);
+        }
+    }
 
 
     const createOrder = (data, actions)=>{
@@ -94,7 +107,9 @@ const OrderScreen = ()=>{
                             </p>
                             {
                                 order.isDelivered ? (
-                                    <Message variant='success'>Delivered</Message>
+                                    <Message variant='success'>
+                                        Delivered on {order.deliveredAt.substring(0, 10)}
+                                    </Message>
                                 ) : (
                                     <Message variant='danger'>Not Delivered</Message>
                                 )
@@ -105,7 +120,7 @@ const OrderScreen = ()=>{
                             <p><strong>Method:{' '}</strong>{order.paymentMethod}</p>
                             {
                                 order.isPaid ? (
-                                    <Message variant='success'>Paid on {order?.paidAt}</Message>
+                                    <Message variant='success'>Paid on {order?.paidAt.substring(0, 10)}</Message>
                                 ) : (
                                     <Message variant='danger'>Not Paid</Message>
                                 )
@@ -178,7 +193,11 @@ const OrderScreen = ()=>{
                             {
                                 userInfo?.isAdmin && !order.isDelivered && (
                                 <ListGroup.Item>
-                                    <Button>Mark as Delivered</Button>
+                                    <Button 
+                                    disabled={!order.isPaid || isUpdateToDeliveredLoading} 
+                                    onClick={updateOrderDelivery}>
+                                        Mark as Delivered
+                                    </Button>
                                 </ListGroup.Item>
                                 ) 
                             }

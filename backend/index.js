@@ -5,10 +5,13 @@ import { configDotenv } from 'dotenv';
 import UserRouter from './routes/UserRoutes.js';
 import ProductRouter from './routes/ProductRoutes.js';
 import OrderRouter from './routes/orderRoutes.js';
+import configCloudinary from './cloudinaryConfig.js';
 
 configDotenv();
 
 connectDB();
+
+configCloudinary();
 
 const app = express();
 

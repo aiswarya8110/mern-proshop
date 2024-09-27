@@ -17,6 +17,13 @@ import PrivateRoute from './components/PrivateRoute.jsx';
 import PaymentScreen from './screens/PaymentScreen.jsx';
 import PlaceOrderScreen from './screens/PlaceOrderScreen.jsx';
 import OrderScreen from './screens/OrderScreen.jsx';
+import ProfileScreen from './screens/ProfileScreen.jsx';
+import OrderListScreen from './screens/Admin/OrderListScreen.jsx';
+import AdminRoute from './components/AdminRoute.jsx';
+import ProductListScreen from './screens/Admin/ProductListScreen.jsx';
+import ProductEditScreen from './screens/Admin/ProductEditScreen.jsx';
+import UserListScreen from './screens/Admin/UserListScreen.jsx';
+import UserEditScreen from './screens/Admin/UserEditScreen.jsx';
 
 const router = createBrowserRouter([
   {
@@ -58,6 +65,30 @@ const router = createBrowserRouter([
       {
         path: 'order/:orderId',
         element: <PrivateRoute><OrderScreen /></PrivateRoute>
+      },
+      {
+        path: 'profile',
+        element: <PrivateRoute><ProfileScreen /></PrivateRoute>
+      },
+      {
+        path: 'admin/orderList',
+        element: <AdminRoute><OrderListScreen /></AdminRoute>
+      },
+      {
+        path: 'admin/productList',
+        element: <AdminRoute><ProductListScreen /></AdminRoute>
+      },
+      {
+        path : 'admin/productList/edit/:id',
+        element: <AdminRoute><ProductEditScreen /></AdminRoute>
+      },
+      {
+        path: '/admin/userList',
+        element: <AdminRoute><UserListScreen /></AdminRoute>
+      },
+      {
+        path: '/admin/userList/edit/:id',
+        element: <AdminRoute><UserEditScreen /></AdminRoute>
       }
     ]
   }

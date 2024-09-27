@@ -34,25 +34,25 @@ const ShippingScreen = ()=>{
             <CheckoutSteps step1 step2 />
             <h1>Shipping</h1>
             <Form onSubmit={handleSubmit}>
-                <Form.Group id='address' className='my-2'>
+                <Form.Group controlId='address' className='my-2'>
                     <Form.Label>
                         Address
                     </Form.Label>
                     <Form.Control type='text' value={address} placeholder='Enter address' onChange={(e)=> setAddress(e.target.value)}/>
                 </Form.Group>
-                <Form.Group id='city' className='my-2'>
+                <Form.Group controlId='city' className='my-2'>
                     <Form.Label>
                         City
                     </Form.Label>
                     <Form.Control type='text' value={city} placeholder='Enter city' onChange={(e)=> setCity(e.target.value)}/>
                 </Form.Group>
-                <Form.Group id='pincode' className='my-2'>
+                <Form.Group controlId='pincode' className='my-2'>
                     <Form.Label>
                         Pin Code
                     </Form.Label>
                     <Form.Control type='text' value={pinCode} placeholder='Enter pincode' onChange={(e)=> setPinCode(e.target.value)}/>
                 </Form.Group>
-                <Form.Group id='country' className='my-2'>
+                <Form.Group controlId='country' className='my-2'>
                     <Form.Label>
                         Country
                     </Form.Label>

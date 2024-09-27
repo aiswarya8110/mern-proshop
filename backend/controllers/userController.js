@@ -10,7 +10,7 @@ const loginUser = asyncHandler(async(req, res)=>{
     const existingUser = await User.findOne({email});
 
     if(!existingUser || !(await existingUser.matchPassword(password))){
-        res.status(401).json("invalid email or password");
+        res.status(401).send("invalid email or password");
         throw new Error("Invalid email or password");
     }
     else{
@@ -86,14 +86,12 @@ const getUserProfile = asyncHandler(async(req, res)=>{
 // @access  Private
 const updateUserProfile = asyncHandler(async(req, res)=>{
     const { name, email, password } = req.body;
-
     const user = await User.findById(req.user._id);
 
     if(user){
         user.name = name || user.name;
         user.email = email || user.email;
         user.password = password || user.password;
-
         const updatedUser = await user.save();
 
         res.status(200).json({
@@ -111,9 +109,55 @@ const updateUserProfile = asyncHandler(async(req, res)=>{
 // @desc Get Users
 // @route GET /api/users
 // @access Private/Admin
-const getUsers = (req, res)=>{
-    res.send('get users')
-}
+const getUsers = asyncHandler(async(req, res)=>{
+    const users = await User.find().select("-password");
+
+    if(users){
+        res.status(200).json(users);
+    }else{
+        res.status(404).send("No users found");
+        throw new Error("No Users found.");
+    }
+})
+
+// @desc Delete User
+// @route DELETE /api/users/:id/delete
+// @access Private/Admin
+const deleteUser = asyncHandler(async(req, res)=>{
+    const userId = req.params.id;
+    await User.deleteOne({_id: userId});
+
+    res.status(200).send("User deleted.");
+})
+
+// @desc Get Users
+// @route GET /api/users
+// @access Private/Admin
+const updateUser = asyncHandler(async(req, res)=>{
+    const userId = req.params.id;
+    const { email, password, isAdmin } = req.body;
+    
+    const user = await User.findById(userId);
+
+    user.email = email || user.email;
+    user.password = password || user.password;
+    user.isAdmin = isAdmin;
+
+    const updatedUser = await user.save();
+    
+    res.status(200).json(updatedUser);
+});
+
+// @desc Get User By Id
+// @route GET /api/users/:id
+// @access Private/Admin
+const getUserById = asyncHandler(async(req, res)=>{
+    const userId = req.params.id;
+
+    const user = await User.findOne({_id: userId});
+
+    res.status(200).json(user);
+})
 
 export {
     loginUser,
@@ -121,5 +165,8 @@ export {
     logoutUser,
     getUserProfile,
     updateUserProfile,
-    getUsers
+    getUsers,
+    deleteUser,
+    updateUser,
+    getUserById,
 }
