@@ -12,6 +12,9 @@ const reviewSchema = new Schema({
     comment: {
         type: String,
         required: true,
+    },
+    user: {
+        type: SchemaTypes.ObjectId,
     }
 })
 
@@ -48,9 +51,10 @@ const ProductSchema = new Schema({
         type: Number,
         required: true,
     },
-    numReviews: {
+    rating: {
         type: Number,
-        required: true
+        default: 0,
+        required: true,
     },
     reviews: [reviewSchema]
 }, {

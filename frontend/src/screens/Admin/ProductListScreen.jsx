@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import {Button, Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import Message from '../../components/Message';
@@ -5,8 +7,11 @@ import Loader from '../../components/Loader';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useCreateSampleProductMutation, useDeleteProductMutation, useGetProductsQuery } from '../../redux/features/ProductsApiSlice';
 import { toast } from 'react-toastify';
+import Paginate from '../../components/Paginate';
 const ProductListScreen = ()=>{
-    const { data:products, isLoading, error, refetch } = useGetProductsQuery();
+    const [ pageNumber, setPageNumber ] = useState(1);
+    const { searchTerm } = useSelector((store)=> store.search);
+    const { data, isLoading, error, refetch } = useGetProductsQuery({pageNumber, searchTerm});
 
     const navigate = useNavigate();
 
@@ -36,7 +41,7 @@ const ProductListScreen = ()=>{
     const createProduct = async()=>{
         try {
             alert("Do you want to create a new product?");
-            const product = await createSampleProduct();
+            await createSampleProduct();
             refetch();
             toast.success("Product is created");
         } catch (error) {
@@ -45,7 +50,7 @@ const ProductListScreen = ()=>{
     }
 
     return (
-        <div>
+        <>
             <div className='d-flex justify-content-between flex-wrap my-4'>
                 <h2>Products</h2>
                 <Button disabled={isCreateSampleProductLoading} onClick={createProduct}>+ Create Product</Button>
@@ -65,7 +70,7 @@ const ProductListScreen = ()=>{
                         </thead>
                         <tbody>
                             {
-                                products?.map((item)=>{
+                                data?.products?.map((item)=>{
                                     const { _id, name, brand, price, category } = item;
                                     return (
                                         <tr key={_id}>
@@ -90,7 +95,12 @@ const ProductListScreen = ()=>{
                     </Table>
                 )
             )}
-        </div>
+            <Paginate 
+            pageNumber={pageNumber} 
+            pages={data?.pages} 
+            setPageNumber={setPageNumber}
+            />
+        </>
     )
 }
 

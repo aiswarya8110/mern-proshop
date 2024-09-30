@@ -1,19 +1,46 @@
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useGetProductsQuery } from '../redux/features/ProductsApiSlice';
-import { Row, Col } from 'react-bootstrap';
+import { updateSearchTerm } from '../redux/features/searchSlice';
+import { Row, Col, Button } from 'react-bootstrap';
 import Product from '../components/Product';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import Paginate from '../components/Paginate';
+import ProductCarousel from '../components/ProductCarousel';
+
 const HomeScreen = ()=>{
-    const {data:products, isLoading, error } = useGetProductsQuery();
-    return isLoading ? <Loader /> : error ? (
+    const [ pageNumber, setPageNumber ] = useState(1);
+    const { searchTerm } = useSelector((store)=> store.search);
+    const { data, isLoading, error, isFetching } = useGetProductsQuery({pageNumber, searchTerm});
+    const dispatch = useDispatch();
+
+    const reset = ()=>{
+        dispatch(updateSearchTerm(""));
+        setPageNumber(1);
+    }
+
+    return isLoading || isFetching ? <Loader /> :
+    data.products.length === 0 ? (
+    <Message>
+        Search results for:{searchTerm} not found.
+    </Message>)
+    : error ? (
     <Message variant='danger'>
         {error?.data?.message || error?.error}
     </Message>) : 
     (<>
+        {
+            searchTerm ? (
+            <Button onClick={reset} variant='light'>
+                Go Back
+            </Button>
+            ) : <ProductCarousel />
+        }
         <h1>Latest Products</h1>
-        <Row>
+        <Row className='gy-4'>
             {
-                products?.map((product)=>{
+                data.products?.map((product)=>{
                     return (
                         <Col sm='12' md='6' lg='4' xl='3' key={product?._id}>
                             <Product product={product}/>
@@ -22,6 +49,10 @@ const HomeScreen = ()=>{
                 })
             }
         </Row>
+        <Paginate 
+        pages={data.pages} 
+        setPageNumber={setPageNumber} 
+        pageNumber={pageNumber}/>
     </>)
 }
 

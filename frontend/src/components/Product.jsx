@@ -20,7 +20,7 @@ const Product = ({ product })=>{
                     ${product?.price}
                 </Card.Text>
                 <Card.Text as='div'>
-                    <Rating value={product?.rating} text={product?.numReviews && `${product.numReviews} reviews`}/>
+                    <Rating value={product?.rating} text={product?.reviews?.length > 0 && `${product?.reviews?.length} reviews`}/>
                 </Card.Text>
             </Card.Body>
         </Card>

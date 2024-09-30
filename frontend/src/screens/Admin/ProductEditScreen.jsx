@@ -65,7 +65,6 @@ const ProductEditScreen = ()=>{
 
         reader.onloadend = ()=>{
             const imageData = reader.result;
-            console.log("Image Data", imageData);
             setImage(imageData);
         }
     }
