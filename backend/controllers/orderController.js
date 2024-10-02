@@ -1,4 +1,5 @@
 import asyncHandler from 'express-async-handler';
+import { verifyPayPalPayment } from '../utils/paypal.js';
 import Order from '../models/orders.js';
 
 // @desc    Create new Order
@@ -65,11 +66,14 @@ const getMyOrders = asyncHandler(async(req, res)=>{
 // @access  Private
 const updateOrderToPaid = asyncHandler(async(req, res)=>{
     const order = await Order.findById(req.params.id);
-
+    const { id:transactionId } = req.body;
+    const { verified } = await verifyPayPalPayment(transactionId);
+    if(!verified) throw new Error("Payment not verified");
+    
     if(order){
         order.isPaid = true;
         order.paidAt = Date.now();
-
+        order.PayPalTransactionId = transactionId;
         const updatedOrder = await order.save();
 
         res.status(201).json(updatedOrder);
@@ -114,4 +118,25 @@ const getOrders = asyncHandler(async(req, res)=>{
     }
 })
 
-export { createOrder, getOrderById, getMyOrders, updateOrderToPaid, updateToDelivered, getOrders };
+// @desc    Check existing transaction for the order
+// @route   GET /api/order/:id/checkExistingTransaction
+// @access  Private
+const checkExistingTransaction = asyncHandler(async(req, res)=>{
+    const orderId = req.params.id;
+    const order = await Order.findById(orderId);
+    if(order){
+        if(!order.PayPalTransactionId){
+            res.status(200)
+            return;
+        }
+        res.status(409).send("Payment already approved.");
+        throw new Error("Payment already approved.");
+        
+    }
+    else{
+        res.status(404).send("Order not found");
+        throw new Error("Order not found");
+    }
+})
+
+export { createOrder, getOrderById, getMyOrders, updateOrderToPaid, updateToDelivered, getOrders, checkExistingTransaction };

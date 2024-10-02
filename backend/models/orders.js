@@ -99,6 +99,9 @@ const OrderSchema = new Schema({
     },
     deliveredAt: {
         type: Date,
+    },
+    PayPalTransactionId: {
+        type: String,
     }
 },
 {

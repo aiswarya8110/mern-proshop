@@ -5,6 +5,7 @@ import { Button, Form } from 'react-bootstrap';
 import FormContainer from "../components/FormContainer";
 import { useNavigate } from 'react-router-dom';
 import CheckoutSteps from '../components/CheckoutSteps';
+import { toast } from 'react-toastify';
 const ShippingScreen = ()=>{
     const { shippingAddress, cartItems } = useSelector((store)=> store.cart);
     const [ address, setAddress ] = useState(shippingAddress?.address || '');
@@ -17,7 +18,11 @@ const ShippingScreen = ()=>{
 
     const handleSubmit  = (e)=>{
         e.preventDefault();
+        if(address === "" || city === "" || pinCode === "" || country === ""){
+            toast.error("Fields cannot be empty.");
 
+            return;
+        }
         dispatch(saveShippingAddress({ address, city, pinCode, country}));
 
         navigate('/payment');

@@ -64,9 +64,10 @@ const cartSlice = createSlice({
 
             localStorage.setItem("cart", JSON.stringify(state));
         },
-        clearCartItems: (state, action )=>{
+        clearCartItems: (state, _ )=>{
             state.cartItems = [];
-
+            state.shippingAddress = null;
+            state.paymentMethod = "PayPal";
             localStorage.setItem("cart", JSON.stringify(state));
         }
     }

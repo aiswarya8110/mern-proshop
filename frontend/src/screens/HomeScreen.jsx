@@ -13,12 +13,8 @@ const HomeScreen = ()=>{
     const [ pageNumber, setPageNumber ] = useState(1);
     const { searchTerm } = useSelector((store)=> store.search);
     const { data, isLoading, error, isFetching } = useGetProductsQuery({pageNumber, searchTerm});
+    
     const dispatch = useDispatch();
-
-    const reset = ()=>{
-        dispatch(updateSearchTerm(""));
-        setPageNumber(1);
-    }
 
     return isLoading || isFetching ? <Loader /> :
     data.products.length === 0 ? (
@@ -32,7 +28,7 @@ const HomeScreen = ()=>{
     (<>
         {
             searchTerm ? (
-            <Button onClick={reset} variant='light'>
+            <Button onClick={()=> dispatch(updateSearchTerm(""))} variant='light'>
                 Go Back
             </Button>
             ) : <ProductCarousel />

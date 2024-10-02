@@ -8,6 +8,7 @@ import { FaShoppingCart, FaUser } from 'react-icons/fa'
 import logo  from '../assets/logo.png';
 import { toast } from 'react-toastify';
 import SearchBox from './SearchBox';
+import { clearCartItems } from '../redux/features/cartSlice';
 const Header = ()=>{
     const { cartItems } = useSelector((store)=> store.cart);
     const { userInfo } = useSelector((store)=> store.auth);
@@ -23,7 +24,7 @@ const Header = ()=>{
             toast.success(res?.data?.message);
 
             dispatch(removeUserInfo());
-
+            dispatch(clearCartItems());
             navigate('/');
         } catch (error) {
             console.log(error);

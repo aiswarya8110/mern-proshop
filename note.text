@@ -3,14 +3,9 @@ reviewSchema - User ref
 
 Custom Error Middleware
 
-To do - delete user and update user, getUserByID controller in userController.js - 8:11
-Routes -delete user and update user, getUserByID controller in userController.js - 11:58 (AUTH middleware and endpoint)
-
-To do
-Admin Profile shows Order
-No orders in Admin conditional rendering
-
 Orderscreen
 
 To do
 edit product read only warning
+
+Admin having cart section

@@ -1,6 +1,6 @@
 import express from 'express';
 import { admin, protect } from '../middleware.js/authMiddleware.js';
-import { createOrder, getMyOrders, getOrderById, getOrders, updateOrderToPaid, updateToDelivered } from '../controllers/orderController.js';
+import { checkExistingTransaction, createOrder, getMyOrders, getOrderById, getOrders, updateOrderToPaid, updateToDelivered } from '../controllers/orderController.js';
 
 const OrderRouter = express.Router();
 
@@ -13,5 +13,7 @@ OrderRouter.get('/:id', protect, getOrderById);
 OrderRouter.put('/:id/pay', protect, updateOrderToPaid);
 
 OrderRouter.patch('/:id/deliver', protect, admin, updateToDelivered);
+
+OrderRouter.get('/:id/checkExistingTransaction', protect, checkExistingTransaction);
 
 export default OrderRouter;

@@ -27,8 +27,6 @@ const PlaceOrderScreen = ()=>{
 
             dispatch(clearCartItems());
 
-            console.log(res);
-
             navigate(`/order/${res?.data?._id}`);
 
         }catch(err){
@@ -55,10 +53,10 @@ const PlaceOrderScreen = ()=>{
                                 <strong>
                                     Address:{' '}
                                 </strong>
-                                {shippingAddress.address},{' '}
-                                {shippingAddress.city},{' '}
-                                {shippingAddress.pinCode},{' '}
-                                {shippingAddress.country}
+                                {shippingAddress?.address},{' '}
+                                {shippingAddress?.city},{' '}
+                                {shippingAddress?.pinCode},{' '}
+                                {shippingAddress?.country}
                             </p>
                         </ListGroup.Item>
                         <ListGroup.Item>

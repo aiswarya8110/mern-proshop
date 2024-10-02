@@ -31,7 +31,7 @@ const PaymentScreen = ()=>{
             <h1>Payment Method</h1>
             <h4>Select Method</h4>
             
-            <Form.Check type='radio' className='mb-2' id='paypal' value='PayPal' name='payment-method' label='PayPal or Credit Card' checked readOnly/>
+            <Form.Check type='radio' className='mb-2' id='paypal' value={paymentMethod} name='payment-method' label='PayPal or Credit Card' checked readOnly/>
             
             <Button variant="primary" type="submit">Continue</Button>
             </Form>
