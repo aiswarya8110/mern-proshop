@@ -19,6 +19,7 @@ import {
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { addToCart } from "../redux/features/cartSlice";
+import Meta from "../components/Meta";
 const ProductScreen = () => {
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState("");
@@ -73,6 +74,8 @@ const ProductScreen = () => {
     <Message variant="danger">{error?.data?.message || error?.message}</Message>
   ) : (
     <>
+      <Meta title={product?.name} content={product?.description}/>
+      <title>{product?.name}</title>
       <Link className="btn btn-light my-3" to="/">
         Go Back
       </Link>

@@ -40,6 +40,7 @@ const OrderScreen = () => {
     }
 
     function loadPayPalScript() {
+      payPalDispatch({type: 'pending'});
       payPalDispatch({
         type: "resetOptions",
         value: {

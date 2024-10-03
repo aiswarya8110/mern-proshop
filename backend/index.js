@@ -24,7 +24,6 @@ app.get('/', (req, res)=>{
     res.send("hello from server");
 })
 
-
 app.use('/api/products', ProductRouter);
 
 app.use('/api/users', UserRouter);
