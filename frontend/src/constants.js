@@ -1,4 +1,4 @@
-export const BASE_URL = process.env.NODE_ENV === "development" ? '/api' : '';
+export const BASE_URL = '/api';
 
 export const PRODUCTS_URL = '/products';
 export const USERS_URL = '/users';

@@ -17,7 +17,7 @@ const HomeScreen = ()=>{
     const dispatch = useDispatch();
 
     return isLoading || isFetching ? <Loader /> :
-    data.products.length === 0 ? (
+    data?.products?.length === 0 ? (
     <Message>
         Search results for:{searchTerm} not found.
     </Message>)
