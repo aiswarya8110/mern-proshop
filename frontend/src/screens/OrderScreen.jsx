@@ -13,7 +13,6 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
 const OrderScreen = () => {
-  console.log(import.meta.env.VITE_PAYPAL_CLIENT_ID)
   const { userInfo } = useSelector((store) => store.auth);
   const { orderId } = useParams();
   const {
